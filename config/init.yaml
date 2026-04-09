@@ -1,0 +1,63 @@
+drivers:
+  daemon:
+    drivers:
+      auth-github:
+        name: auth-github
+        type: builtin
+        handlerData:
+          shortName: hd-driver-auth-github
+    services:
+      api:
+        description: Honeydipper API service with GitHub OAuth
+        auth-providers:
+          - auth-github
+        auth:
+          casbin:
+            policies+:
+              - |
+                p, org:owners, gh_event, read, auth-github
+                p, org:maintainers, gh_event, read, auth-github
+                p, org:members, gh_event, read, auth-github
+                p, org:collaborators, gh_event, read, auth-github
+                p, repo:owners, gh_event, read, auth-github
+                p, repo:maintainers, gh_event, read, auth-github
+                p, repo:members, gh_event, read, auth-github
+                p, repo:collaborators, gh_event, read, auth-github
+
+                p, org:owners, gh_secret, write, auth-github
+                p, org:maintainers, gh_secret, write, auth-github
+                p, repo:owners, gh_secret, write, auth-github
+                p, repo:maintainers, gh_secret, write, auth-github
+
+auth-github:
+  # GitHub OAuth Application credentials
+  # These can be set via environment variables:
+  # GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET
+  client_id: $nil
+  client_secret: $nil
+  
+  # OAuth redirect URI - must match GitHub App configuration
+  redirect_uri: https://your-domain/auth/github/callback
+  
+  # Optional: Restrict access to specific GitHub organizations
+  # Leave empty to allow all authenticated GitHub users
+  allowed_orgs: []
+  # Example with organizations:
+  # allowed_orgs:
+  #   - my-org
+  #   - another-org
+  
+  # Optional: Restrict access to specific teams
+  # Format: org:team
+  allowed_teams: []
+  # Example with teams:
+  # allowed_teams:
+  #   - my-org:backend
+  #   - my-org:devops
+  
+  # JWT session token settings
+  token_expiration: 86400  # 24 hours in seconds
+  
+  # User information cache settings
+  cache_ttl: 3600  # Cache entries expire after 1 hour
+  cache_size: 1000  # Maximum number of cached users

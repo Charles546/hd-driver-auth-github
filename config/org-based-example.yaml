@@ -1,0 +1,64 @@
+# Example: Organization-Based Access Control
+# Use GitHub organization membership to control access tiers
+
+drivers:
+  daemon:
+    services:
+      api:
+        auth-providers:
+          - auth-github
+        auth:
+          casbin:
+            models:
+              - |
+                [request_definition]
+                r = sub, obj, act, provider
+
+                [policy_definition]
+                p = sub, obj, act, provider
+
+                [role_definition]
+                g = _, _
+                g2 = _, _
+
+                [policy_effect]
+                e = some(where (p.eft == allow))
+
+                [matchers]
+                m = (g(r.sub, p.sub) && g2(r.obj, p.obj) && r.act == p.act && r.provider == p.provider) \
+                  || (r.sub == p.sub && r.obj == p.obj && r.act == p.act && r.provider == p.provider) \
+                  || (r.sub == 'admin')
+
+            policies:
+              - |
+                # Define resource groups
+                g2, webui, api-resources
+                g2, workflows, api-resources
+                
+                # Define role groups based on org prefixes
+                # When a user logs in from org:engineering, assign them eng-role
+                g, org:engineering, eng-role
+                g, org:operations, ops-role
+                g, org:security, security-role
+                
+                # Permissions for roles
+                p, eng-role, api-resources, write, auth-github
+                p, ops-role, api-resources, write, auth-github
+                p, security-role, api-resources, read, auth-github
+                p, everyone, webui, read, auth-github
+
+auth-github:
+  data:
+    client_id: ${GITHUB_CLIENT_ID}
+    client_secret: ${GITHUB_CLIENT_SECRET}
+    redirect_uri: https://honeydipper.example.com/auth/github/callback
+    
+    # Allow users from multiple organizations
+    allowed_orgs:
+      - engineering
+      - operations
+      - security
+    
+    token_expiration: 86400
+    cache_ttl: 1800  # 30 minutes
+    cache_size: 5000

@@ -1,0 +1,71 @@
+# Example: Web UI Authentication with GitHub
+# This configuration enables users to log in with GitHub and grants per-user access rights.
+
+drivers:
+  daemon:
+    services:
+      api:
+        description: Honeydipper Web UI API
+        auth-providers:
+          - auth-github
+        auth:
+          casbin:
+            models:
+              - |
+                [request_definition]
+                r = sub, obj, act, provider
+
+                [policy_definition]
+                p = sub, obj, act, provider, eft
+
+                [role_definition]
+                g = _, _
+
+                [policy_effect]
+                e = some(where (p.eft == allow))
+
+                [matchers]
+                m = (r.sub == p.sub && r.obj == p.obj && r.act == p.act && r.provider == p.provider) \
+                  || (g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act && r.provider == p.provider) \
+                  || (r.sub == 'admin' && p.obj == 'everything') \
+                  || (p.sub == 'everyone' && r.obj == p.obj && r.act == p.act && r.provider == p.provider)
+
+            policies:
+              - |
+                # Permission levels
+                p, viewer-role, webui, read, auth-github, allow
+                p, editor-role, webui, write, auth-github, allow
+                p, admin-role, everything, write, auth-github, allow
+                
+                # Individual user permissions
+                # To grant specific users access
+                p, alice, webui, read, auth-github, allow
+                p, bob, webui, write, auth-github, allow
+                
+                # Role assignments - map individual users to roles
+                g, alice, viewer-role
+                g, charlie, editor-role
+                g, dave, admin-role
+                
+                # Everyone can read (public access)
+                p, everyone, webui, read, auth-github, allow
+
+auth-github:
+  data:
+    client_id: ${GITHUB_CLIENT_ID}
+    client_secret: ${GITHUB_CLIENT_SECRET}
+    redirect_uri: https://honeydipper.example.com/auth/github/callback
+    
+    # Restrict to GitHub organization members
+    allowed_orgs:
+      - my-organization
+    
+    # Restrict to specific teams within organizations
+    allowed_teams:
+      - my-organization:web-team
+      - my-organization:ops-team
+    
+    # Token and cache settings
+    token_expiration: 86400
+    cache_ttl: 3600
+    cache_size: 1000
