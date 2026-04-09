@@ -88,10 +88,17 @@ auth-github:
     client_id: ${GITHUB_CLIENT_ID}
     client_secret: ${GITHUB_CLIENT_SECRET}
     redirect_uri: https://your-domain/auth/github/callback
+
+    # Optional: Usernames to restrict login to (case-insensitive)
+    allowed_users: []
     
     # Optional: Organizations to restrict access to
-    # If empty, all GitHub users can authenticate
     allowed_orgs: []
+
+    # Optional: Controls behavior when allowed_users and allowed_orgs are both empty
+    # true keeps legacy behavior (allow any authenticated GitHub user)
+    # false requires explicit allowlists
+    allow_when_no_restrictions: true
     
     # Optional: Teams within organizations (format: org:team)
     allowed_teams: []
@@ -105,7 +112,8 @@ auth-github:
 
 ### Basic Policy Setup
 
-Allow all authenticated GitHub users to read the web UI:
+Allow all authenticated GitHub users to read the web UI
+(for strict mode, set allow_when_no_restrictions to false and configure allowed_users and/or allowed_orgs):
 
 ```yaml
 policies:

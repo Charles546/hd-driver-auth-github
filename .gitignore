@@ -5,7 +5,7 @@
 dist/
 build/
 *.exe
-hd-driver-auth-github
+/hd-driver-auth-github
 vendor/
 .idea/
 *.iml

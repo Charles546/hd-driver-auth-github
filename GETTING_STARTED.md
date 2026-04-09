@@ -22,7 +22,9 @@ auth-github:
     client_id: ${GITHUB_CLIENT_ID}
     client_secret: ${GITHUB_CLIENT_SECRET}
     redirect_uri: https://your-domain/auth/github/callback
-    allowed_orgs: []  # Optional: restrict to specific orgs
+    allowed_users: []
+    allowed_orgs: []
+    allow_when_no_restrictions: true
     token_expiration: 86400
 ```
 
@@ -152,7 +154,9 @@ Place the binary in your Honeydipper drivers directory and reference in config.
 - `redirect_uri` - OAuth callback URL (must match GitHub App config exactly)
 
 ### Optional Settings
-- `allowed_orgs` - List of GitHub organizations to restrict access (empty = allow all)
+- `allowed_users` - List of GitHub usernames to restrict access (case-insensitive)
+- `allowed_orgs` - List of GitHub organizations to restrict access
+- `allow_when_no_restrictions` - Allows login when both allowed_users and allowed_orgs are empty (default: true)
 - `allowed_teams` - List of teams as `org:team` for finer-grained restrictions
 - `token_expiration` - JWT lifetime in seconds (default: 86400 = 24 hours)
 - `cache_ttl` - User info cache lifetime in seconds (default: 3600 = 1 hour)
@@ -163,7 +167,7 @@ Place the binary in your Honeydipper drivers directory and reference in config.
 1. **Credentials**: Store `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` in secure environment variables
 2. **HTTPS**: Always use HTTPS in production; OAuth requires secure callbacks
 3. **Token Scope**: Requests `user:email` and `read:org` scopes only
-4. **Org Restrictions**: Use `allowed_orgs` to limit access to your organization
+4. **Login Restrictions**: Use `allowed_users` and/or `allowed_orgs` to limit who can authenticate
 5. **Token Expiration**: Set reasonable expiration; users re-authenticate when expired
 6. **Casbin Policies**: Regularly audit role definitions and policy assignments
 

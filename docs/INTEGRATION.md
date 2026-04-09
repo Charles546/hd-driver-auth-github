@@ -114,7 +114,9 @@ auth-github:
     client_id: ${GITHUB_CLIENT_ID}
     client_secret: ${GITHUB_CLIENT_SECRET}
     redirect_uri: https://your-domain/auth/github/callback
-    allowed_orgs: []  # Leave empty for all users, or specify orgs
+    allowed_users: []
+    allowed_orgs: []
+    allow_when_no_restrictions: true
     token_expiration: 86400
 ```
 
@@ -392,9 +394,11 @@ policies:
 
 ### Organization Restrictions
 
-1. **Check `allowed_orgs` setting**: User must belong to one of the allowed organizations
-2. **Verify OAuth scope**: Include `read:org` scope to read organization membership
-3. **Check GitHub permissions**: Org membership might be private; user needs public membership
+1. **Check `allowed_users` setting**: If set, user login must be explicitly listed
+2. **Check `allowed_orgs` setting**: If set, user must belong to one of the allowed organizations
+3. **Check `allow_when_no_restrictions`**: If both allowed_users and allowed_orgs are empty, this toggle controls whether login is allowed
+4. **Verify OAuth scope**: Include `read:org` scope to read organization membership
+5. **Check GitHub permissions**: Org membership might be private; user needs public membership
 
 ### Session Token Issues
 

@@ -39,13 +39,24 @@ auth-github:
   # OAuth redirect URI - must match GitHub App configuration
   redirect_uri: https://your-domain/auth/github/callback
   
+  # Optional: Restrict access to specific GitHub usernames (case-insensitive)
+  allowed_users: []
+  # Example with users:
+  # allowed_users:
+  #   - octocat
+  #   - alice
+
   # Optional: Restrict access to specific GitHub organizations
-  # Leave empty to allow all authenticated GitHub users
   allowed_orgs: []
   # Example with organizations:
   # allowed_orgs:
   #   - my-org
   #   - another-org
+
+  # Behavior when both allowed_users and allowed_orgs are empty.
+  # true keeps legacy behavior (allow any authenticated GitHub user).
+  # false requires explicit allowlists.
+  allow_when_no_restrictions: true
   
   # Optional: Restrict access to specific teams
   # Format: org:team
