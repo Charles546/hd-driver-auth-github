@@ -28,47 +28,46 @@ drivers:
                 p, org:maintainers, gh_secret, write, auth-github
                 p, repo:owners, gh_secret, write, auth-github
                 p, repo:maintainers, gh_secret, write, auth-github
+  auth-github:
+    # GitHub OAuth Application credentials
+    # These can be set via environment variables:
+    # GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET
+    client_id: $nil
+    client_secret: $nil
 
-auth-github:
-  # GitHub OAuth Application credentials
-  # These can be set via environment variables:
-  # GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET
-  client_id: $nil
-  client_secret: $nil
-  
-  # OAuth redirect URI - must match GitHub App configuration
-  redirect_uri: https://your-domain/auth/github/callback
-  
-  # Optional: Restrict access to specific GitHub usernames (case-insensitive)
-  allowed_users: []
-  # Example with users:
-  # allowed_users:
-  #   - octocat
-  #   - alice
+    # OAuth redirect URI - must match GitHub App configuration
+    redirect_uri: https://your-domain/auth/github/callback
 
-  # Optional: Restrict access to specific GitHub organizations
-  allowed_orgs: []
-  # Example with organizations:
-  # allowed_orgs:
-  #   - my-org
-  #   - another-org
+    # Optional: Restrict access to specific GitHub usernames (case-insensitive)
+    allowed_users: []
+    # Example with users:
+    # allowed_users:
+    #   - octocat
+    #   - alice
 
-  # Behavior when both allowed_users and allowed_orgs are empty.
-  # true keeps legacy behavior (allow any authenticated GitHub user).
-  # false requires explicit allowlists.
-  allow_when_no_restrictions: true
-  
-  # Optional: Restrict access to specific teams
-  # Format: org:team
-  allowed_teams: []
-  # Example with teams:
-  # allowed_teams:
-  #   - my-org:backend
-  #   - my-org:devops
-  
-  # JWT session token settings
-  token_expiration: 86400  # 24 hours in seconds
-  
-  # User information cache settings
-  cache_ttl: 3600  # Cache entries expire after 1 hour
-  cache_size: 1000  # Maximum number of cached users
+    # Optional: Restrict access to specific GitHub organizations
+    allowed_orgs: []
+    # Example with organizations:
+    # allowed_orgs:
+    #   - my-org
+    #   - another-org
+
+    # Behavior when both allowed_users and allowed_orgs are empty.
+    # true keeps legacy behavior (allow any authenticated GitHub user).
+    # false requires explicit allowlists.
+    allow_when_no_restrictions: false
+
+    # Optional: Restrict access to specific teams
+    # Format: org:team
+    allowed_teams: []
+    # Example with teams:
+    # allowed_teams:
+    #   - my-org:backend
+    #   - my-org:devops
+
+    # JWT session token settings
+    token_expiration: 86400  # 24 hours in seconds
+
+    # User information cache settings
+    cache_ttl: 3600  # Cache entries expire after 1 hour
+    cache_size: 1000  # Maximum number of cached users
