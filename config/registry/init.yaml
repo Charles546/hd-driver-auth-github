@@ -1,0 +1,22 @@
+---
+# Load hd-driver-auth-github from the Honeydipper registry instead of a built-in binary.
+# Include this file in addition to (and after) config/init.yaml to override
+# the driver type when running from a registry-sourced deployment.
+#
+# The registry named below must be defined under drivers.daemon.registries in
+# your daemon config, for example:
+#
+#   drivers:
+#     daemon:
+#       registries:
+#         charles-gh-pages:
+#           baseURL: https://charles546.github.io/honeydipper-registry
+drivers:
+  daemon:
+    drivers:
+      auth-github:
+        name: auth-github
+        type: remote
+        handlerData:
+          registry: charles-gh-pages
+          channel: stable
