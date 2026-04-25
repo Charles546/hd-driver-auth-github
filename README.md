@@ -22,6 +22,32 @@ This driver provides GitHub OAuth2-based authentication and authorization for Ho
 
 ## Configuration
 
+The repository config in [config/init.yaml](/home/charles/code/hd-driver-auth-github/config/init.yaml) now uses a single entrypoint for both deployment modes:
+
+- Default: download the driver from the named remote registry `charles-gh-pages`
+- Optional: switch to a pre-fetched local binary by loading the repo with `options.use_local_binary: true`
+
+Example repo entry:
+
+```yaml
+repos:
+  - repo: https://github.com/Charles546/hd-driver-auth-github.git
+    options:
+      # Optional. Omit this line to use the registry-backed default.
+      use_local_binary: true
+```
+
+Optional remote overrides can also be passed through repo options:
+
+```yaml
+repos:
+  - repo: https://github.com/Charles546/hd-driver-auth-github.git
+    options:
+      registry: charles-gh-pages
+      channel: stable
+      # version: v0.1.0
+```
+
 ### GitHub App Setup
 
 Create a GitHub App or OAuth Application:

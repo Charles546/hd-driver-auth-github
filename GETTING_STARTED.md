@@ -101,7 +101,7 @@ hd-driver-auth-github/
 - **[README.md](README.md)** - Project overview and features
 - **[docs/INTEGRATION.md](docs/INTEGRATION.md)** - Complete web UI integration guide with code examples
 - **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)** - Developer guide for extending the driver
-- **[config/init.yaml](config/init.yaml)** - Configuration template with all options
+- **[config/init.yaml](config/init.yaml)** - Single configuration template for both registry download (default) and local binary mode via repo options
 - **[config/webui-example.yaml](config/webui-example.yaml)** - Web UI example with role-based access
 - **[config/org-based-example.yaml](config/org-based-example.yaml)** - Organization-based access control example
 
