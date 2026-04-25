@@ -148,23 +148,6 @@ func getPrincipalAccessToken(principal map[string]interface{}) string {
 	return ""
 }
 
-func (d *authGitHubDriver) canAccessOrg(accessToken, orgName string) bool {
-	if accessToken == "" {
-		return false
-	}
-
-	resp, err := d.githubAPIGet(accessToken, fmt.Sprintf("/user/memberships/orgs/%s", orgName))
-	if err != nil {
-		d.GetLogger().Debugf("[%s] Failed to query org membership for %s: %v", d.Service, orgName, err)
-		return false
-	}
-	defer func() {
-		_ = resp.Body.Close()
-	}()
-
-	return resp.StatusCode == http.StatusOK
-}
-
 func (d *authGitHubDriver) getOrgRole(username, accessToken, orgName string) (string, bool) {
 	if strings.EqualFold(username, orgName) {
 		return "owner", true
@@ -198,23 +181,6 @@ func normalizeOrgRole(role string) string {
 	default:
 		return ""
 	}
-}
-
-func (d *authGitHubDriver) canAccessRepo(accessToken, owner, repo string) bool {
-	if accessToken == "" {
-		return false
-	}
-
-	resp, err := d.githubAPIGet(accessToken, fmt.Sprintf("/repos/%s/%s", owner, repo))
-	if err != nil {
-		d.GetLogger().Debugf("[%s] Failed to query repo access for %s/%s: %v", d.Service, owner, repo, err)
-		return false
-	}
-	defer func() {
-		_ = resp.Body.Close()
-	}()
-
-	return resp.StatusCode == http.StatusOK
 }
 
 func (d *authGitHubDriver) getRepoRole(username, accessToken, owner, repo string) (string, bool) {
