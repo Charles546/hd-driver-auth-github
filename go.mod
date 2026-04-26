@@ -4,7 +4,7 @@ go 1.26.1
 
 require (
 	github.com/golang-jwt/jwt/v5 v5.2.2
-	github.com/honeydipper/honeydipper/v4 v4.0.0-20260319043115-ddaf102c56fa
+	github.com/honeydipper/honeydipper/v4 v4.0.0-alpha2
 	golang.org/x/oauth2 v0.35.0
 )
 
