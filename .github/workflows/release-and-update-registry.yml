@@ -33,7 +33,7 @@ jobs:
       binary_name: hd-driver-auth-github
       go_build_path: ./cmd/hd-driver-auth-github
       release_tag: ${{ needs.prepare.outputs.release_tag }}
-      manifest_file: hd-driver-auth-github.json
+      manifest_file: auth-github.json
       mirror_url: https://charles546.github.io/honeydipper-registry/artifacts/hd-driver-auth-github/${{ needs.prepare.outputs.release_tag }}/linux-amd64/hd-driver-auth-github
     secrets:
       registry_repo_token: ${{ secrets.REGISTRY_REPO_TOKEN }}
