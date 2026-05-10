@@ -45,6 +45,11 @@ drivers:
                 p, repo:members, gh_event, read, auth-github
                 p, repo:collaborators, gh_event, read, auth-github
 
+                p, org:owners, gh_event, write, auth-github
+                p, org:maintainers, gh_event, write, auth-github
+                p, repo:owners, gh_event, write, auth-github
+                p, repo:maintainers, gh_event, write, auth-github
+
                 p, org:owners, gh_secret, write, auth-github
                 p, org:maintainers, gh_secret, write, auth-github
                 p, repo:owners, gh_secret, write, auth-github
